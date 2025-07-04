@@ -14,6 +14,7 @@ public class Order : Auditable
     public string? BarCode { get; set; }
     public string? Notes { get; set; } = "Sin indicaciones adicionales";
     public string? CustomerName { get; set; }
+    public int BranchID { get; set; } // NUEVO CAMPO
 
     // Definir las llaves foráneas
     public List<OrderProduct> OrderProducts { get; set; } = new();

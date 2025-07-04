@@ -29,4 +29,5 @@ public class Product : Auditable
     public ProductStatus ProductStatus { get; set; }
     public List<ProductCategory> ProductCategories { get; set; } = [];
 
+    public int BranchID { get; set; } // NUEVO CAMPO
 }

@@ -25,7 +25,8 @@ public class OrderMapper : IMapper<OrderRequestDTO, OrderEntity>
             }).ToList()
             ?? null,
             OrderStatusID = dto.OrderStatusID,
-            CreatedBy = dto.CreatedBy
+            CreatedBy = dto.CreatedBy,
+            BranchID = dto.BranchID
         };
     }
 

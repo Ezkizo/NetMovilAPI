@@ -18,5 +18,5 @@ public class ProductRequestDTO
     public int ProductStatusID { get; set; }
     public int CreatedBy { get; set; }
     public int[]? ProductCategories { get; set; }
-
+    public int BranchID { get; set; } // NUEVO CAMPO
 }

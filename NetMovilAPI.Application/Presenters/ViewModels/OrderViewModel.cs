@@ -17,6 +17,7 @@ public class OrderViewModel
     public List<OrderProductViewModel>? OrderProducts { get; set; }
     public DateTime? OrderDate { get; set; }
     public int CreatedBy { get; set; }
+    public int BranchID { get; set; } // NUEVO CAMPO
     [JsonIgnore]
     public List<string>? Errors { get; set; } = [];
 }

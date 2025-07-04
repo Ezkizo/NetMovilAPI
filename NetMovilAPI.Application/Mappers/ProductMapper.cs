@@ -19,6 +19,7 @@ public class ProductMapper : IMapper<ProductRequestDTO, ProductEntity>
             ImageUrls = dto.ImageUrls,
             BarCode = dto.BarCode,
             IsStock = dto.IsStock,
+            BranchID = dto.BranchID,
             ProductCategories = dto?.ProductCategories?.Select(pe => new Domain.Entities.Shared.CategoryEntity
             {
                 CategoryID = pe

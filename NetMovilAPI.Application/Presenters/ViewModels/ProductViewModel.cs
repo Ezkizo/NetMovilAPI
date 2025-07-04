@@ -20,6 +20,7 @@ public class ProductViewModel
     public decimal? StockQuantity { get; set; }
     public DateTime CreatedAt { get; set; }
     public int CreatedBy { get; set; }
+    public int BranchID { get; set; } // NUEVO CAMPO
     public List<CategoryViewModel> Categories { get; set; } = [];
     [JsonIgnore]
     public List<string> Errors { get; set; } = [];

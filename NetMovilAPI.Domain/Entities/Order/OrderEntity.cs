@@ -15,4 +15,5 @@ public class OrderEntity : AuditableEntity
     public string? CustomerName { get; set; }
     public List<OrderProductEntity>? OrderProducts { get; set; }
     public List<string>? Errors { get; set; } = new();
+    public int BranchID { get; set; } // NUEVO CAMPO
 }

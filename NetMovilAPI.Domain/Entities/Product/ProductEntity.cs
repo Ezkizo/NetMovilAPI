@@ -18,5 +18,5 @@ public class ProductEntity : AuditableEntity
     public StatusEntity? ProductStatus { get; set; } = new();
     public List<CategoryEntity>? ProductCategories { get; set; } = [];
     public List<string>? Errors { get; set; } = [];
-
+    public int BranchID { get; set; } // NUEVO CAMPO
 }

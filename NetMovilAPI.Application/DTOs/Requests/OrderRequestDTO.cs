@@ -12,6 +12,7 @@ public class OrderRequestDTO
     public int? TableID { get; set; }
     public int CreatedBy { get; set; }
     public List<OrderProductRequestDTO>? OrderProducts { get; set; }
+    public int BranchID { get; set; } // NUEVO CAMPO
 }
 
 public class OrderProductRequestDTO
