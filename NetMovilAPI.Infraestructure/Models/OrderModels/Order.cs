@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NetMovilAPI.Infraestructure.Models.Shared;
 using NetMovilAPI.Infraestructure.Models.Statuses;
 using NetMovilAPI.Infraestructure.Models.UserModels;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ public class Order : Auditable
     public string? Notes { get; set; } = "Sin indicaciones adicionales";
     public string? CustomerName { get; set; }
     public int BranchID { get; set; } // NUEVO CAMPO
+    public Branch Branch { get; set; } // <--- Propiedad de navegación
 
     // Definir las llaves foráneas
     public List<OrderProduct> OrderProducts { get; set; } = new();

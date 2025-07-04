@@ -30,4 +30,5 @@ public class Product : Auditable
     public List<ProductCategory> ProductCategories { get; set; } = [];
 
     public int BranchID { get; set; } // NUEVO CAMPO
+    public Branch Branch { get; set; } // Propiedad de navegación
 }

@@ -47,6 +47,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     public DbSet<Stock> Stock { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<CategoryStatus> CategoryStatus { get; set; }
+    public DbSet<Branch> Branch { get; set; } // <--- NUEVO
     #endregion Shared
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -140,6 +141,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasForeignKey(op => op.ProductID)
             .OnDelete(DeleteBehavior.NoAction);
 
+        // Relación Branch - Order
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Branch)
+            .WithMany(b => b.Orders)
+            .HasForeignKey(o => o.BranchID)
+            .OnDelete(DeleteBehavior.NoAction);
+
         #endregion Order
 
         #region Sale
@@ -193,6 +201,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasOne(pc => pc.Product)
             .WithMany(p => p.ProductCategories)
             .HasForeignKey(pc => pc.ProductID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Relación Branch - Product
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Branch)
+            .WithMany(b => b.Products)
+            .HasForeignKey(p => p.BranchID)
             .OnDelete(DeleteBehavior.NoAction);
 
         #endregion Product
@@ -257,6 +272,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasOne(s => s.Product)
             .WithOne(p => p.Stock)
             .HasForeignKey<Stock>(s => s.ProductID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Relación Branch - Stock
+        modelBuilder.Entity<Stock>()
+            .HasOne(s => s.Branch)
+            .WithMany(b => b.Stocks)
+            .HasForeignKey(s => s.BranchID)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Category>().HasKey(c => c.CategoryID);
@@ -437,7 +459,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         modelBuilder.Entity<SaleStatus>()
             .Property(c => c.Description)
             .HasMaxLength(30);
-                
+
         modelBuilder.Entity<UserStatus>()
             .Property(c => c.Description)
             .HasMaxLength(30);
@@ -449,6 +471,37 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         modelBuilder.Entity<PaymentMethod>()
             .Property(c => c.Description)
             .HasMaxLength(300);
+
+        #region Branch
+        modelBuilder.Entity<Branch>().HasKey(b => b.BranchID);
+        modelBuilder.Entity<Branch>()
+            .Property(b => b.Name)
+            .HasMaxLength(100)
+            .IsRequired();
+        modelBuilder.Entity<Branch>()
+            .Property(b => b.Address)
+            .HasMaxLength(200);
+
+        modelBuilder.Entity<Branch>()
+            .HasMany(b => b.Orders)
+            .WithOne(o => o.Branch)
+            .HasForeignKey(o => o.BranchID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Branch>()
+            .HasMany(b => b.Products)
+            .WithOne(p => p.Branch)
+            .HasForeignKey(p => p.BranchID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Branch>()
+            .HasMany(b => b.Stocks)
+            .WithOne(s => s.Branch)
+            .HasForeignKey(s => s.BranchID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        #endregion Branch
+
 
         base.OnModelCreating(modelBuilder);
     }
