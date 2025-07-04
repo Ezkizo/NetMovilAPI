@@ -8,5 +8,5 @@ public class PaymentStatus
     [Key]
     public int PaymentStatusID { get; set; }
     public string Description { get; set; }
-    public List<Sale> Sales { get; set; } = new();
+    public List<Sale> Sales { get; set; } = [];
 }

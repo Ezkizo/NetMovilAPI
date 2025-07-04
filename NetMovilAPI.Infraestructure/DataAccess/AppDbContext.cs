@@ -93,11 +93,6 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 
         modelBuilder.Entity<CustomerAddress>().HasKey(e => e.CustomerAddressID);
         modelBuilder.Entity<CustomerAddress>()
-            .HasOne(ca => ca.Customer)
-            .WithMany(c => c.Addresses)
-            .HasForeignKey(ca => ca.CustomerID)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<CustomerAddress>()
             .HasMany(ca => ca.Orders)
             .WithOne(o => o.CustomerAddress)
             .HasForeignKey(o => o.CustomerAddressID)
@@ -439,7 +434,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasMaxLength(50);
         #endregion Address
 
-        #region Statuses
+        #region StatusesProperties
         modelBuilder.Entity<CategoryStatus>()
             .Property(c => c.Description)
             .HasMaxLength(30);
@@ -463,7 +458,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         modelBuilder.Entity<UserStatus>()
             .Property(c => c.Description)
             .HasMaxLength(30);
-        #endregion Statuses
+        #endregion StatusesProperties
 
         modelBuilder.Entity<PaymentMethod>()
             .Property(c => c.Name)
