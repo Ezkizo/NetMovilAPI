@@ -1,0 +1,32 @@
+﻿using NetMovilAPI.Application.DTOs.Requests;
+using NetMovilAPI.Domain.Entities.Product;
+using NetMovilAPI.Domain.Interfaces;
+
+namespace NetMovilAPI.Application.Mappers;
+public class ProductMapper : IMapper<ProductRequestDTO, ProductEntity>
+{
+    public ProductEntity ToEntity(ProductRequestDTO dto)
+    {
+        return new ProductEntity
+        {
+            ProductID = dto.ProductID,
+            Name = dto.Name,
+            Description = dto.Description,
+            SupplierPrice = dto.SupplierPrice,
+            BasePrice = dto.BasePrice,
+            ProfitMargin = dto.ProfitMargin,
+            UnitPrice = dto.UnitPrice,
+            ImageUrls = dto.ImageUrls,
+            BarCode = dto.BarCode,
+            IsStock = dto.IsStock,
+            ProductCategories = dto?.ProductCategories?.Select(pe => new Domain.Entities.Shared.CategoryEntity
+            {
+                CategoryID = pe
+            }).ToList() ?? [],
+            ProductStatus = new Domain.Entities.BaseEntities.StatusEntity { Id = dto.ProductStatusID }
+        };
+    }
+
+    public IEnumerable<ProductEntity> ToEntity(List<ProductRequestDTO> dtos) => [.. dtos.Select(ToEntity)];
+}
+

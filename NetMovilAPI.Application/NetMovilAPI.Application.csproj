@@ -7,14 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="UseCases\" />
-    <Folder Include="Presenters\" />
+    <ProjectReference Include="..\NetMovilAPI.Domain\NetMovilAPI.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NetMovilAPI.Domain\NetMovilAPI.Domain.csproj" />
+    <Folder Include="UseCases\SaleUseCases\" />
   </ItemGroup>
 
 </Project>

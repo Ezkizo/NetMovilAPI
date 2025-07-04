@@ -1,6 +1,5 @@
-﻿namespace NetMovilAPI.Infraestructure.Models;
-
-public class Auditable
+﻿namespace NetMovilAPI.Domain.Entities.BaseEntities;
+public class AuditableEntity
 {
     public int CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -9,4 +8,3 @@ public class Auditable
     public int? DeletedBy { get; set; }
     public DateTime? DeletedAt { get; set; }
 }
-
