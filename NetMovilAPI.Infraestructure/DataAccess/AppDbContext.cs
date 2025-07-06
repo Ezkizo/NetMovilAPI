@@ -495,9 +495,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasForeignKey(s => s.BranchID)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Branch)
+            .WithMany(b => b.Users)
+            .HasForeignKey(u => u.BranchID)
+            .OnDelete(DeleteBehavior.NoAction);
+
         #endregion Branch
-
-
         base.OnModelCreating(modelBuilder);
     }
 }

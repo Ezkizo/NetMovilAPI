@@ -1,5 +1,6 @@
 using NetMovilAPI.Infraestructure.Models.OrderModels;
 using NetMovilAPI.Infraestructure.Models.ProductModels;
+using NetMovilAPI.Infraestructure.Models.UserModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,7 +17,8 @@ public class Branch
     public string? Address { get; set; }
 
     // Relaciones de navegación
-    public List<Order> Orders { get; set; } = new();
-    public List<Product> Products { get; set; } = new();
-    public List<Stock> Stocks { get; set; } = new();
+    public List<User> Users { get; set; } = [];
+    public List<Order> Orders { get; set; } = [];
+    public List<Product> Products { get; set; } = [];
+    public List<Stock> Stocks { get; set; } = [];
 }

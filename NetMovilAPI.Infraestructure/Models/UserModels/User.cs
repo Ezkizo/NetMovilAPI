@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetMovilAPI.Infraestructure.Models.Shared;
 using NetMovilAPI.Infraestructure.Models.Statuses;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,4 +13,9 @@ public class User : IdentityUser<int>
     [ForeignKey("UserStatusID")]
     public int UserStatusID { get; set; }
     public UserStatus UserStatus { get; set; }
+
+    // Nuevo campo opcional
+    [ForeignKey("BranchID")]
+    public int? BranchID { get; set; }
+    public Branch Branch { get; set; }
 }
