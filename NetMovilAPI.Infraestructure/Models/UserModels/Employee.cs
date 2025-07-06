@@ -19,8 +19,5 @@ public class Employee : Auditable
     public int Id { get; set; }
     public User? User { get; set; }
 
-    [ForeignKey("RoleID")]
-    public int RoleID { get; set; }
-    public List<IdentityRole<int>> Role { get; set; } = [];
-    public List<Order>? Orders { get; set; }
+    public List<Order> Orders { get; set; }
 }

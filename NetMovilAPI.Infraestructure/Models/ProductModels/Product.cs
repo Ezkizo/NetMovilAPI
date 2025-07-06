@@ -12,7 +12,6 @@ public class Product : Auditable
     public string? Description { get; set; }
 
     // Añadir campo de precio de proveedor
-    public decimal SupplierPrice { get; set; }
     public decimal BasePrice { get; set; }
     public decimal ProfitMargin { get; set; }
     public decimal UnitPrice { get; set; }

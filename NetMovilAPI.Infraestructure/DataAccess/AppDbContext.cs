@@ -81,11 +81,6 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         // Employee Relations
         modelBuilder.Entity<Employee>().HasKey(e => e.EmployeeID);
         modelBuilder.Entity<Employee>()
-            .HasOne(e => e.Role)
-            .WithOne()
-            .HasForeignKey<Employee>(e => e.RoleID)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Employee>()
             .HasOne(e => e.User)
             .WithOne()
             .HasForeignKey<Employee>(e => e.Id)
@@ -346,10 +341,6 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 
         modelBuilder.Entity<Product>()
             .Property(p => p.ProfitMargin)
-            .HasColumnType("decimal(18,4)");
-
-        modelBuilder.Entity<Product>()
-            .Property(p => p.SupplierPrice)
             .HasColumnType("decimal(18,4)");
 
         modelBuilder.Entity<Product>()
