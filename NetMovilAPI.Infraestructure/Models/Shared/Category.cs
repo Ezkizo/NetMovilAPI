@@ -7,8 +7,10 @@ public class Category : Auditable
 {
     [Key]
     public int CategoryID { get; set; }
-    public string Description { get; set; }
+    [MaxLength(70)]
     public string Name { get; set; }
+    [MaxLength(300)]
+    public string Description { get; set; }
     public string ImageUrl { get; set; }
 
     [ForeignKey("CategoryStatusID")]

@@ -14,9 +14,9 @@ public class UpdateCategoryUseCase<TDTO, TEntity, TOutput>
         _mapper = mapper;
     }
 
-    public async Task<TOutput> ExecuteAsync(TDTO dTO)
+    public async Task<TOutput> ExecuteAsync(TDTO DTO)
     {
-        var result = await _repository.UpdateAsync(_mapper.ToEntity(dTO));
+        var result = await _repository.UpdateAsync(_mapper.ToEntity(DTO));
         return _presenter.Present(result);
     }
 

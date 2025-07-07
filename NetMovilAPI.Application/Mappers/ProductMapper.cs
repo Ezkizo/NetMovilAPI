@@ -10,13 +10,12 @@ public class ProductMapper : IMapper<ProductRequestDTO, ProductEntity>
         return new ProductEntity
         {
             ProductID = dto.ProductID,
-            Name = dto.Name,
+            Name = dto.Name ?? "Desconocido",
             Description = dto.Description,
-            SupplierPrice = dto.SupplierPrice,
             BasePrice = dto.BasePrice,
             ProfitMargin = dto.ProfitMargin,
             UnitPrice = dto.UnitPrice,
-            ImageUrls = dto.ImageUrls,
+            ImageUrl = dto.ImageUrl,
             BarCode = dto.BarCode,
             IsStock = dto.IsStock,
             BranchID = dto.BranchID,
@@ -24,7 +23,7 @@ public class ProductMapper : IMapper<ProductRequestDTO, ProductEntity>
             {
                 CategoryID = pe
             }).ToList() ?? [],
-            ProductStatus = new Domain.Entities.BaseEntities.StatusEntity { Id = dto.ProductStatusID }
+            ProductStatus = new Domain.Entities.BaseEntities.StatusEntity { Id = dto?.ProductStatusID ?? 0 }
         };
     }
 

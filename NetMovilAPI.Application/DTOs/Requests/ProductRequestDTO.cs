@@ -9,7 +9,7 @@ public class ProductRequestDTO
     public decimal BasePrice { get; set; }
     public decimal ProfitMargin { get; set; }
     public decimal UnitPrice { get; set; }
-    public string[]? ImageUrls { get; set; }
+    public string ImageUrl { get; set; } = "defaultproductimage.png";
     public string? BarCode { get; set; } = "Sin Código de Barras";
     public int? SupplierID { get; set; }
     public bool IsStock { get; set; }

@@ -59,12 +59,11 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
             model.Description = entity.Description;
             model.ImageUrl = entity.ImageUrl;
             model.CategoryStatusID = entity.CategoryStatus.Id;
-            model.UpdatedBy = entity.UpdatedBy;
+            model.UpdatedBy = entity.CreatedBy;
             model.UpdatedAt = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
-
-            entity.CreatedAt = model.CreatedAt;
+            entity.UpdatedAt = model.UpdatedAt;
             return entity;
         }
         catch (Exception ex)
@@ -77,12 +76,23 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
         }
     }
 
-    public async Task<ApiResponse<CategoryEntity>> DeleteAsync(int id)
+    public async Task<ApiResponse<CategoryEntity>> DeleteAsync(int id, int idUser)
     {
         try
         {
             var query = _dbContext.Category.Where(c => c.CategoryID == id);
-            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.CategoryStatusID, 1));
+            var model = await query.FirstOrDefaultAsync();
+            if (model == null)
+            {
+                return new ApiResponse<CategoryEntity>
+                {
+                    Success = false,
+                    Message = "Categoría no encontrada"
+                };
+            }
+            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.CategoryStatusID, 1)
+                .SetProperty(ct => ct.UpdatedBy, idUser)
+                .SetProperty(ct => ct.UpdatedAt, DateTime.Now));
             return new ApiResponse<CategoryEntity>
             {
                 Success = true,
@@ -93,6 +103,7 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
         {
             return new ApiResponse<CategoryEntity>
             {
+                Data = new(),
                 Success = false,
                 Message = "Error al eliminar la categoría: " + ex.Message,
             };

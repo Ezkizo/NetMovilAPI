@@ -5,6 +5,6 @@ public interface IActionRepository<TEntity>
 {
     public Task<TEntity> AddAsync(TEntity entity);
     public Task<TEntity> UpdateAsync(TEntity entity);
-    public Task<ApiResponse<TEntity>> DeleteAsync(int id);
+    public Task<ApiResponse<TEntity>> DeleteAsync(int id, int idUser);
 }
 

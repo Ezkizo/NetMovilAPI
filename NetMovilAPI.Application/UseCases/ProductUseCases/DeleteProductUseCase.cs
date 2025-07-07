@@ -1,4 +1,5 @@
-﻿using NetMovilAPI.Domain.Interfaces;
+﻿using NetMovilAPI.Domain.Entities.BaseEntities;
+using NetMovilAPI.Domain.Interfaces;
 
 namespace NetMovilAPI.Application.UseCases.ProductUseCases;
 public class DeleteProductUseCase<TEntity, TOutput>
@@ -10,9 +11,16 @@ public class DeleteProductUseCase<TEntity, TOutput>
         _repository = categoryRepository;
         _presenter = presenter;
     }
-    public async Task<TOutput> ExecuteAsync(int id)
+    public async Task<ApiResponse<TOutput>> ExecuteAsync(int id, int idUser)
     {
-        var data = await _repository.DeleteAsync(id);
-        return _presenter.Present(data);
+        var data = await _repository.DeleteAsync(id, idUser);
+        var result =  _presenter.Present(data.Data!);
+        return new ApiResponse<TOutput>
+        {
+            Data = result,
+            Message = data.Message,
+            Success = data.Success,
+            Errors = data.Errors
+        };
     }
 }

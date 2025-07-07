@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetMovilAPI.Domain.Entities.BaseEntities;
 using NetMovilAPI.Domain.Entities.Order;
-using NetMovilAPI.Domain.Entities.Shared;
 using NetMovilAPI.Domain.Interfaces;
 using NetMovilAPI.Infraestructure.Models.OrderModels;
-using System.Diagnostics;
 
 namespace NetMovilAPI.Infraestructure.DataAccess.Repositories.OrderRepositories;
 public class OrderActionRepository : IActionRepository<OrderEntity>
@@ -122,12 +120,14 @@ public class OrderActionRepository : IActionRepository<OrderEntity>
         }
     }
 
-    public async Task<ApiResponse<OrderEntity>> DeleteAsync(int id)
+    public async Task<ApiResponse<OrderEntity>> DeleteAsync(int id, int idUser)
     {
         try
         {
             var query = _dbContext.Category.Where(c => c.CategoryID == id);
             await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.CategoryStatusID, 1));
+            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.DeletedAt, DateTime.Now));
+            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.DeletedBy, idUser));
 
             return new ApiResponse<OrderEntity>
             {

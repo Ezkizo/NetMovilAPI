@@ -15,13 +15,13 @@ public class Product : Auditable
     public decimal BasePrice { get; set; }
     public decimal ProfitMargin { get; set; }
     public decimal UnitPrice { get; set; }
-    public string? ImageUrl { get; set; } = "defaultproductimage.webp";
+    public string ImageUrl { get; set; } = "defaultproductimage.png";
     public string? BarCode { get; set; } = "Sin Código de Barras";
     public bool IsStock { get; set; }
 
     [ForeignKey("StockID")]
     public int? StockID { get; set; }
-    public Stock Stock { get; set; }
+    public Stock? Stock { get; set; }
 
     [ForeignKey("ProductStatusID")]
     public int ProductStatusID { get; set; }
