@@ -27,14 +27,14 @@ public class Order : Auditable
 
     [ForeignKey("EmployeeID")]
     public int EmployeeID { get; set; }
-    public Employee? Employee { get; set; }
-
-    [ForeignKey("AddressID")]
-    public int? CustomerAddressID { get; set; }
-    public CustomerAddress? CustomerAddress { get; set; }
+    public User? Employee { get; set; }
 
     [ForeignKey("CustomerID")]
     public int? CustomerID { get; set; }
-    public Customer? Customer { get; set; }
+    public User? Customer { get; set; }
+
+    //[ForeignKey("AddressID")]
+    //public int? CustomerAddressID { get; set; }
+    //public CustomerAddress? CustomerAddress { get; set; }
 
 }

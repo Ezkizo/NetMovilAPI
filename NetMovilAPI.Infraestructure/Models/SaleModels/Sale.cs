@@ -22,5 +22,5 @@ public class Sale : Auditable
     [ForeignKey("OrderID")]
     public int OrderID { get; set; }
     public Order Order { get; set; }
-    public List<SalePayment> Payments { get; set; } = new();
+    public List<SalePayment> Payments { get; set; }
 }

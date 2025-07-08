@@ -8,5 +8,7 @@ public class SalePaymentEntity : AuditableEntity
     public string? Reference { get; set; }
     public int SaleID { get; set; }
     public int PaymentMethodID { get; set; }
-    public PaymentStatusEntity PaymentStatus { get; set; } = new();
+    public string PaymentMehod { get; set; } = "Desconocido"; // Default value if not set
+    public int PaymentStatusID { get; set; }
+    public string PaymentStatus { get; set; } = "Desconocido"; // Default value if not set
 }

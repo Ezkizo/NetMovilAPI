@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetMovilAPI.Domain.Entities.BaseEntities;
 using NetMovilAPI.Domain.Entities.Order;
 using NetMovilAPI.Domain.Entities.Sale;
 using NetMovilAPI.Domain.Interfaces;
@@ -32,10 +33,9 @@ public class SaleQueryRepository : IQueryRepository<Sale, SaleEntity>
                     SalePaymentID = p.SalePaymentID,
                     Amount = p.Amount,
                     PaymentMethodID = p.PaymentMethodID,
-                    PaymentStatus = new Domain.Entities.BaseEntities.PaymentStatusEntity
-                    {
-                        Description = p.PaymentStatus.Description
-                    },
+                    PaymentMehod = p.PaymentMethod.Description ?? "Desconocido",
+                    PaymentStatus = p.PaymentStatus.Description,
+                    PaymentStatusID = p.PaymentStatusID,
                 }).ToList(),
                 CreatedAt = c.CreatedAt,
                 CreatedBy = c.CreatedBy
@@ -63,10 +63,9 @@ public class SaleQueryRepository : IQueryRepository<Sale, SaleEntity>
                     SalePaymentID = p.SalePaymentID,
                     Amount = p.Amount,
                     PaymentMethodID = p.PaymentMethodID,
-                    PaymentStatus = new Domain.Entities.BaseEntities.PaymentStatusEntity
-                    {
-                        Description = p.PaymentStatus.Description
-                    },
+                    PaymentMehod = p.PaymentMethod.Description ?? "Desconocido",
+                    PaymentStatus =  p.PaymentStatus.Description,
+                    PaymentStatusID = p.PaymentStatusID,
                 }).ToList(),
                 CreatedAt = c.CreatedAt,
                 CreatedBy = c.CreatedBy

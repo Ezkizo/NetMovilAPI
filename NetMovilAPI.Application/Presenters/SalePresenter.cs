@@ -22,10 +22,14 @@ public class SalePresenter : IPresenter<SaleEntity, SaleViewModel>
                 SalePaymentID = p.SalePaymentID,
                 Amount = p.Amount,
                 PaymentMethodID = p.PaymentMethodID,
-                PaymentStatus = p.PaymentStatus?.Description ?? "Desconocido"
+                PaymentMehod = p.PaymentMehod,
+                PaymentStatusID = p.PaymentStatusID,
+                PaymentStatus = p.PaymentStatus
             }).ToList() ?? [],
             CreatedAt = data.CreatedAt,
-            CreatedBy = data.CreatedBy
+            CreatedBy = data.CreatedBy,
+            UpdatedAt = data.UpdatedAt,
+            UpdatedBy = data.CreatedBy
         };
     }
 

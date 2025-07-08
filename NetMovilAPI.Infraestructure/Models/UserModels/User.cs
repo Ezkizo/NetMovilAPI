@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetMovilAPI.Infraestructure.Models.OrderModels;
 using NetMovilAPI.Infraestructure.Models.Shared;
 using NetMovilAPI.Infraestructure.Models.Statuses;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,4 +19,5 @@ public class User : IdentityUser<int>
     [ForeignKey("BranchID")]
     public int? BranchID { get; set; }
     public Branch Branch { get; set; }
+    public List<Order> Orders { get; set; }
 }

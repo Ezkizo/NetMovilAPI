@@ -17,7 +17,6 @@ public class UserMapper : IMapper<UserRequestDTO, UserEntity>
             PhoneNumber = dto.PhoneNumber,
             UserStatusID = dto.UserStatusID,
             UserName = dto.UserName ?? string.Empty,
-            PasswordHash = dto.PasswordHash ?? string.Empty
         };
     }
     public IEnumerable<UserEntity> ToEntity(List<UserRequestDTO> dtos) => [.. dtos.Select(ToEntity)];

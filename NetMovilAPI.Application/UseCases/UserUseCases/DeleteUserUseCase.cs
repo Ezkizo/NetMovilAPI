@@ -6,19 +6,15 @@ namespace NetMovilAPI.Application.UseCases.UserUseCases;
 public class DeleteUserUseCase<TEntity, TOutput>
 {
     private readonly IActionRepository<TEntity> _repository;
-    private readonly IPresenter<TEntity, TOutput> _presenter;
-    public DeleteUserUseCase(IActionRepository<TEntity> repository, IPresenter<TEntity, TOutput> presenter)
+    public DeleteUserUseCase(IActionRepository<TEntity> repository)
     {
         _repository = repository;
-        _presenter = presenter;
     }
     public async Task<ApiResponse<TOutput>> ExecuteAsync(int id, int idUser)
     {
         var data = await _repository.DeleteAsync(id, idUser);
-        var result = _presenter.Present(data.Data!);
         return new ApiResponse<TOutput>
         {
-            Data = result,
             Message = data.Message,
             Success = data.Success,
             Errors = data.Errors

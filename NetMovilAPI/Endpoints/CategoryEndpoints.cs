@@ -18,7 +18,7 @@ public static class CategoryEndpoints
         group.MapGet("", async Task<IResult> (GetCategoryUseCase<Category, CategoryEntity, CategoryViewModel> useCase) =>
         {
             var result = await useCase.ExecuteAsync(c => c.CategoryStatusID != 0);
-            if (result == null || result.Any())
+            if (result == null || !result.Any())
             {
                 return TypedResults.NotFound(new ApiResponse<IEnumerable<CategoryViewModel>>("No se pudieron recuperar correctamente los registros"));
             }
@@ -145,10 +145,10 @@ public static class CategoryEndpoints
                 return TypedResults.BadRequest(response);
             }
             var result = await useCase.ExecuteAsync(id, idUser);
-            if (result.Data!.CategoryID == 0)
+            if (!result.Success)
             {
-                response = new("El id solicitado no fue encontrado");
-                return TypedResults.NotFound(response);
+                // El código que indica que la solicitud no se pudo llevar a cabo en http es 400, no 404
+                return TypedResults.UnprocessableEntity(result);
             }
             return TypedResults.NoContent();
         })
@@ -161,9 +161,9 @@ public static class CategoryEndpoints
             {
                 Description = "Solicitud incorrecta"
             };
-            operation.Responses["404"] = new OpenApiResponse
+            operation.Responses["422"] = new OpenApiResponse
             {
-                Description = "Recurso no encontrado"
+                Description = "No se puede procesar la solicitud"
             };
             operation.Responses["204"] = new OpenApiResponse
             {

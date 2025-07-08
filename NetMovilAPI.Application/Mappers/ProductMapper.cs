@@ -23,7 +23,15 @@ public class ProductMapper : IMapper<ProductRequestDTO, ProductEntity>
             {
                 CategoryID = pe
             }).ToList() ?? [],
-            ProductStatus = new Domain.Entities.BaseEntities.StatusEntity { Id = dto?.ProductStatusID ?? 0 }
+            ProductStatus = new Domain.Entities.BaseEntities.StatusEntity { Id = dto?.ProductStatusID ?? 0 },
+            Stock = dto.IsStock 
+            ? new Domain.Entities.Shared.StockEntity
+            {
+                BranchID = dto.BranchID,
+                Quantity = (decimal)dto.StockQuantity!,
+                Threshold = (decimal)dto.Threshold!
+            }
+            : null
         };
     }
 

@@ -1,13 +1,12 @@
 ﻿using NetMovilAPI.Domain.Interfaces;
 
-namespace NetMovilAPI.Application.UseCases.OrderUseCases;
-
-public class UpdateOrderUseCase<TDTO, TEntity, TOutput>
+namespace NetMovilAPI.Application.UseCases.SaleUseCases;
+public class UpdateSaleUseCase<TDTO, TEntity, TOutput>
 {
     private readonly IPresenter<TEntity, TOutput> _presenter;
     private readonly IActionRepository<TEntity> _repository;
     private readonly IMapper<TDTO, TEntity> _mapper;
-    public UpdateOrderUseCase(IPresenter<TEntity, TOutput> presenter, IActionRepository<TEntity> repository, IMapper<TDTO, TEntity> mapper)
+    public UpdateSaleUseCase(IPresenter<TEntity, TOutput> presenter, IActionRepository<TEntity> repository, IMapper<TDTO, TEntity> mapper)
     {
         _presenter = presenter;
         _repository = repository;

@@ -10,8 +10,4 @@
     <ProjectReference Include="..\NetMovilAPI.Domain\NetMovilAPI.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\SaleUseCases\" />
-  </ItemGroup>
-
 </Project>

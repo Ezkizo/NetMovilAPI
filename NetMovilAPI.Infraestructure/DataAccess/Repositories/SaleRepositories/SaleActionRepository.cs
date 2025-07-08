@@ -29,7 +29,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                 Amount = p.Amount,
                 Reference = p.Reference,
                 PaymentMethodID = p.PaymentMethodID,
-                PaymentStatusID = p.PaymentStatus.Id,
+                PaymentStatusID = p.PaymentStatusID,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = entity.CreatedBy
             }).ToList() ?? []
@@ -50,7 +50,9 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                 Reference = sp.Reference,
                 SaleID = sp.SaleID,
                 PaymentMethodID = sp.PaymentMethodID,
-                PaymentStatus = new PaymentStatusEntity { Id = sp.PaymentStatusID }
+                PaymentMehod = sp.PaymentMethod.Description ?? "Desconocido",
+                PaymentStatusID = sp.PaymentStatusID,
+                PaymentStatus = sp.PaymentStatus.Description,
             }).ToList();
 
             return entity;
@@ -95,7 +97,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                     Amount = p.Amount,
                     Reference = p.Reference,
                     PaymentMethodID = p.PaymentMethodID,
-                    PaymentStatusID = p.PaymentStatus.Id,
+                    PaymentStatusID = p.PaymentStatusID,
                     CreatedAt = DateTime.UtcNow,
                     CreatedBy = entity.UpdatedBy ?? entity.CreatedBy
                 }).ToList();
@@ -111,7 +113,9 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                 Reference = sp.Reference,
                 SaleID = sp.SaleID,
                 PaymentMethodID = sp.PaymentMethodID,
-                PaymentStatus = new PaymentStatusEntity { Id = sp.PaymentStatusID }
+                PaymentMehod = sp.PaymentMethod.Description ?? "Desconocido",
+                PaymentStatusID = sp.PaymentStatusID,
+                PaymentStatus = sp.PaymentStatus.Description,
             }).ToList();
 
             return entity;

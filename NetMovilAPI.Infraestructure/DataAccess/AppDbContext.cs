@@ -493,6 +493,72 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .OnDelete(DeleteBehavior.NoAction);
 
         #endregion Branch
+
+        #region SeedData
+        modelBuilder.Entity<UserStatus>().HasData(
+            new UserStatus { UserStatusID = 1, Description = "Eliminado" },
+            new UserStatus { UserStatusID = 2, Description = "Inactivo" },
+            new UserStatus { UserStatusID = 3, Description = "Activo" }
+        );
+
+        modelBuilder.Entity<SaleStatus>().HasData(
+            new SaleStatus { SaleStatusID = 1, Description = "Eliminada" },
+            new SaleStatus { SaleStatusID = 2, Description = "Cancelada" },
+            new SaleStatus { SaleStatusID = 3, Description = "Pendiente" },
+            new SaleStatus { SaleStatusID = 4, Description = "Pagada" }
+        );
+
+        modelBuilder.Entity<ProductStatus>().HasData(
+            new ProductStatus { ProductStatusID = 1, Description = "Eliminado" },
+            new ProductStatus { ProductStatusID = 2, Description = "Fuera de Stock" },
+            new ProductStatus { ProductStatusID = 3, Description = "En existencia" }
+        );
+
+        modelBuilder.Entity<PaymentStatus>().HasData(
+            new PaymentStatus { PaymentStatusID = 1, Description = "Eliminado" },
+            new PaymentStatus { PaymentStatusID = 2, Description = "Cancelado" },
+            new PaymentStatus { PaymentStatusID = 3, Description = "Rechazado" },
+            new PaymentStatus { PaymentStatusID = 4, Description = "En espera" },
+            new PaymentStatus { PaymentStatusID = 5, Description = "Aceptado" }
+        );
+
+        var dateTime = DateTime.Now;
+
+        modelBuilder.Entity<PaymentMethod>().HasData(
+            new PaymentMethod { PaymentMethodID = 1, Name = "Efectivo", Description = "Pago en efectivo directo a caja.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime },
+            new PaymentMethod { PaymentMethodID = 2, Name = "Transferencia", Description = "Transferencia DIMO, banca digital o CODI.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime },
+            new PaymentMethod { PaymentMethodID = 3, Name = "Terminal", Description = "Pago en terminal bancaria, se abona a una cuenta digital.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime }
+        );
+
+        modelBuilder.Entity<OrderStatus>().HasData(
+            new OrderStatus { OrderStatusID = 1, Description = "Eliminada"},
+            new OrderStatus { OrderStatusID = 2, Description = "Cancelada"},
+            new OrderStatus { OrderStatusID = 3, Description = "En reclamación"},
+            new OrderStatus { OrderStatusID = 4, Description = "Activa"},
+            new OrderStatus { OrderStatusID = 5, Description = "Completada" }
+        );
+
+        modelBuilder.Entity<CategoryStatus>().HasData(
+            new CategoryStatus { CategoryStatusID = 1, Description = "Eliminada" },
+            new CategoryStatus { CategoryStatusID = 2, Description = "Inactiva" },
+            new CategoryStatus { CategoryStatusID = 3, Description = "Activa" }
+        );
+
+        modelBuilder.Entity<Category>().HasData(
+            new Category { CategoryID = 1, Name = "Ejemplo", Description = "Categoría de ejemplo", ImageUrl = "defaultcategory.png", CategoryStatusID = 3, CreatedBy = 1, CreatedAt = dateTime }
+        );
+
+        modelBuilder.Entity<Branch>().HasData(
+            new Branch { BranchID = 1, Name = "Sucursal 1", Address = "Dirección sucursal 1"},
+            new Branch { BranchID = 2, Name = "Sucursal 2", Address = "Dirección sucursal 2"}
+        );
+
+        modelBuilder.Entity<Product>().HasData(
+            new Product { ProductID = 1, Name = "Ejemplo producto", Description = "Este es un producto de prueba", BasePrice = 50.00m, ProfitMargin = 100, UnitPrice = 100, ImageUrl = "defaultproduct.png", BarCode = null, IsStock = false, ProductStatusID = 3, BranchID = 1, CreatedBy = 1, CreatedAt = dateTime }
+        );
+
+        #endregion SeedData
+
         base.OnModelCreating(modelBuilder);
     }
 }

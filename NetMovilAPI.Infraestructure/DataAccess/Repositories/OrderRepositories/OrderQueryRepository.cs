@@ -59,7 +59,7 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
             .Select(o => new OrderEntity
             {
                 OrderID = o.OrderID,
-                EmployeeID = o.EmployeeID,
+                UserID = o.UserID,
                 TotalAmount = o.TotalAmount,
                 BarCode = o.BarCode,
                 Notes = o.Notes,

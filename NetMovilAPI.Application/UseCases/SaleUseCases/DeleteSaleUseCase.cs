@@ -1,14 +1,13 @@
-using NetMovilAPI.Domain.Entities.BaseEntities;
+﻿using NetMovilAPI.Domain.Entities.BaseEntities;
 using NetMovilAPI.Domain.Interfaces;
 
-namespace NetMovilAPI.Application.UseCases.EmployeeUseCases;
-
-public class DeleteEmployeeUseCase<TEntity, TOutput>
+namespace NetMovilAPI.Application.UseCases.SaleUseCases;
+public class DeleteSaleUseCase<TEntity, TOutput>
 {
     private readonly IActionRepository<TEntity> _repository;
-    public DeleteEmployeeUseCase(IActionRepository<TEntity> repository)
+    public DeleteSaleUseCase(IActionRepository<TEntity> categoryRepository)
     {
-        _repository = repository;
+        _repository = categoryRepository;
     }
     public async Task<ApiResponse<TOutput>> ExecuteAsync(int id, int idUser)
     {
@@ -21,3 +20,4 @@ public class DeleteEmployeeUseCase<TEntity, TOutput>
         };
     }
 }
+

@@ -6,6 +6,7 @@ public class SaleEntity : AuditableEntity
 {
     public int SaleID { get; set; }
     public decimal TotalPaid { get; set; }
+    public int OrderID { get; set; }
     public OrderEntity Order { get; set; }
-    public List<SalePaymentEntity> Payments { get; set; }
+    public List<SalePaymentEntity>? Payments { get; set; }
 }
