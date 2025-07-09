@@ -35,6 +35,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.AddEnvironmentVariables(); // Prioriza variables de Azure
+}
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -66,10 +70,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("IsCustomer", policy => policy.RequireRole("Customer"));
 });
 // Configuración de autenticación JWT
-var key = builder.Configuration["APIKeyPruebas"];
+var key = builder.Configuration["API_KEY_SECRET"];
 if (string.IsNullOrEmpty(key))
 {
-    throw new InvalidOperationException("APIKeyPruebas no está configurado en appsettings.json");
+    throw new InvalidOperationException("APIKey no está configurado.");
 }
 
 builder.Services.AddAuthentication(options =>
@@ -144,6 +148,14 @@ builder.Services.AddScoped<DeleteSaleUseCase<SaleEntity, SaleViewModel>>();
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -209,7 +221,7 @@ app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManag
     };
     claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
     claims.AddRange(userClaims.Select(claim => new Claim(claim.Type, claim.Value)));
-    var credsKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["APIKeyPruebas"]!));
+    var credsKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
     var creds = new SigningCredentials(credsKey, SecurityAlgorithms.HmacSha256);
     var token = new JwtSecurityToken(
         issuer: null, // Especificar un emisor si se desea
