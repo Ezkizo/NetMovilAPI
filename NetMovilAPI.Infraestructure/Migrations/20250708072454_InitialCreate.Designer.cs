@@ -12,7 +12,7 @@ using NetMovilAPI.Infraestructure.DataAccess;
 namespace NetMovilAPI.Infraestructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250707074511_InitialCreate")]
+    [Migration("20250708072454_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -173,13 +173,10 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<int>("BranchID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CustomerAddressID")
                         .HasColumnType("int");
 
                     b.Property<int?>("CustomerID")
@@ -188,8 +185,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -207,8 +204,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -216,8 +213,6 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("OrderID");
 
                     b.HasIndex("BranchID");
-
-                    b.HasIndex("CustomerAddressID");
 
                     b.HasIndex("CustomerID");
 
@@ -272,14 +267,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<int>("BranchID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -313,8 +308,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -326,6 +321,23 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasIndex("ProductStatusID");
 
                     b.ToTable("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductID = 1,
+                            BasePrice = 50.00m,
+                            BranchID = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 1,
+                            Description = "Este es un producto de prueba",
+                            ImageUrl = "defaultproduct.png",
+                            IsStock = false,
+                            Name = "Ejemplo producto",
+                            ProductStatusID = 3,
+                            ProfitMargin = 100m,
+                            UnitPrice = 100m
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.ProductModels.ProductCategory", b =>
@@ -351,14 +363,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleID"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -375,8 +387,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<decimal>("TotalPaid")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -404,14 +416,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -429,8 +441,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<int>("SaleID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -466,6 +478,20 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("BranchID");
 
                     b.ToTable("Branch");
+
+                    b.HasData(
+                        new
+                        {
+                            BranchID = 1,
+                            Address = "Dirección sucursal 1",
+                            Name = "Sucursal 1"
+                        },
+                        new
+                        {
+                            BranchID = 2,
+                            Address = "Dirección sucursal 2",
+                            Name = "Sucursal 2"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Shared.Category", b =>
@@ -479,14 +505,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<int>("CategoryStatusID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -506,8 +532,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -517,6 +543,18 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasIndex("CategoryStatusID");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryStatusID = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 1,
+                            Description = "Categoría de ejemplo",
+                            ImageUrl = "defaultcategory.png",
+                            Name = "Ejemplo"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Shared.PaymentMethod", b =>
@@ -527,14 +565,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentMethodID"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
@@ -551,8 +589,8 @@ namespace NetMovilAPI.Infraestructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -560,6 +598,35 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("PaymentMethodID");
 
                     b.ToTable("PaymentMethod");
+
+                    b.HasData(
+                        new
+                        {
+                            PaymentMethodID = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 1,
+                            Description = "Pago en efectivo directo a caja.",
+                            IsActive = true,
+                            Name = "Efectivo"
+                        },
+                        new
+                        {
+                            PaymentMethodID = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 1,
+                            Description = "Transferencia DIMO, banca digital o CODI.",
+                            IsActive = true,
+                            Name = "Transferencia"
+                        },
+                        new
+                        {
+                            PaymentMethodID = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 1,
+                            Description = "Pago en terminal bancaria, se abona a una cuenta digital.",
+                            IsActive = true,
+                            Name = "Terminal"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Shared.Stock", b =>
@@ -608,6 +675,23 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("CategoryStatusID");
 
                     b.ToTable("CategoryStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryStatusID = 1,
+                            Description = "Eliminada"
+                        },
+                        new
+                        {
+                            CategoryStatusID = 2,
+                            Description = "Inactiva"
+                        },
+                        new
+                        {
+                            CategoryStatusID = 3,
+                            Description = "Activa"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Statuses.OrderStatus", b =>
@@ -626,6 +710,33 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("OrderStatusID");
 
                     b.ToTable("OrderStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderStatusID = 1,
+                            Description = "Eliminada"
+                        },
+                        new
+                        {
+                            OrderStatusID = 2,
+                            Description = "Cancelada"
+                        },
+                        new
+                        {
+                            OrderStatusID = 3,
+                            Description = "En reclamación"
+                        },
+                        new
+                        {
+                            OrderStatusID = 4,
+                            Description = "Activa"
+                        },
+                        new
+                        {
+                            OrderStatusID = 5,
+                            Description = "Completada"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Statuses.PaymentStatus", b =>
@@ -644,6 +755,33 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("PaymentStatusID");
 
                     b.ToTable("PaymentStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            PaymentStatusID = 1,
+                            Description = "Eliminado"
+                        },
+                        new
+                        {
+                            PaymentStatusID = 2,
+                            Description = "Cancelado"
+                        },
+                        new
+                        {
+                            PaymentStatusID = 3,
+                            Description = "Rechazado"
+                        },
+                        new
+                        {
+                            PaymentStatusID = 4,
+                            Description = "En espera"
+                        },
+                        new
+                        {
+                            PaymentStatusID = 5,
+                            Description = "Aceptado"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Statuses.ProductStatus", b =>
@@ -662,6 +800,23 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("ProductStatusID");
 
                     b.ToTable("ProductStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductStatusID = 1,
+                            Description = "Eliminado"
+                        },
+                        new
+                        {
+                            ProductStatusID = 2,
+                            Description = "Fuera de Stock"
+                        },
+                        new
+                        {
+                            ProductStatusID = 3,
+                            Description = "En existencia"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Statuses.SaleStatus", b =>
@@ -680,6 +835,28 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("SaleStatusID");
 
                     b.ToTable("SaleStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            SaleStatusID = 1,
+                            Description = "Eliminada"
+                        },
+                        new
+                        {
+                            SaleStatusID = 2,
+                            Description = "Cancelada"
+                        },
+                        new
+                        {
+                            SaleStatusID = 3,
+                            Description = "Pendiente"
+                        },
+                        new
+                        {
+                            SaleStatusID = 4,
+                            Description = "Pagada"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.Statuses.UserStatus", b =>
@@ -698,153 +875,23 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasKey("UserStatusID");
 
                     b.ToTable("UserStatus");
-                });
 
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Customer", b =>
-                {
-                    b.Property<int>("CustomerID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerID");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.CustomerAddress", b =>
-                {
-                    b.Property<int>("CustomerAddressID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerAddressID"));
-
-                    b.Property<string>("City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DeliveryReferences")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValue("Sin referencias");
-
-                    b.Property<int?>("PostalCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("State")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Street")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerAddressID");
-
-                    b.HasIndex("CustomerID");
-
-                    b.ToTable("CustomerAddress");
-                });
-
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Employee", b =>
-                {
-                    b.Property<int>("EmployeeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EmergencyContact")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("EmergencyContactName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProfileImage")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeID");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Employee");
+                    b.HasData(
+                        new
+                        {
+                            UserStatusID = 1,
+                            Description = "Eliminado"
+                        },
+                        new
+                        {
+                            UserStatusID = 2,
+                            Description = "Inactivo"
+                        },
+                        new
+                        {
+                            UserStatusID = 3,
+                            Description = "Activo"
+                        });
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.User", b =>
@@ -873,15 +920,23 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
+                    b.Property<string>("EmergencyContact")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("EmergencyContactName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -906,6 +961,10 @@ namespace NetMovilAPI.Infraestructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImage")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -935,6 +994,67 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.HasIndex("UserStatusID");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.UserAddress", b =>
+                {
+                    b.Property<int>("UserAddressID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserAddressID"));
+
+                    b.Property<string>("City")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostalCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("References")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValue("Sin referencias");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserAddressID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CustomerAddress");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -996,18 +1116,13 @@ namespace NetMovilAPI.Infraestructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.CustomerAddress", "CustomerAddress")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerAddressID")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.Customer", "Customer")
-                        .WithMany("Orders")
+                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.User", "Customer")
+                        .WithMany("OrdersAsCustomer")
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.Employee", "Employee")
-                        .WithMany("Orders")
+                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.User", "Employee")
+                        .WithMany("OrdersAsEmployee")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -1021,8 +1136,6 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("CustomerAddress");
 
                     b.Navigation("Employee");
 
@@ -1170,39 +1283,6 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Customer", b =>
-                {
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.User", "User")
-                        .WithOne()
-                        .HasForeignKey("NetMovilAPI.Infraestructure.Models.UserModels.Customer", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.CustomerAddress", b =>
-                {
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.Customer", "Customer")
-                        .WithMany("Addresses")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Employee", b =>
-                {
-                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.User", "User")
-                        .WithOne()
-                        .HasForeignKey("NetMovilAPI.Infraestructure.Models.UserModels.Employee", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.User", b =>
                 {
                     b.HasOne("NetMovilAPI.Infraestructure.Models.Shared.Branch", "Branch")
@@ -1219,6 +1299,17 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("UserStatus");
+                });
+
+            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.UserAddress", b =>
+                {
+                    b.HasOne("NetMovilAPI.Infraestructure.Models.UserModels.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.OrderModels.Order", b =>
@@ -1284,21 +1375,13 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Customer", b =>
+            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.User", b =>
                 {
                     b.Navigation("Addresses");
 
-                    b.Navigation("Orders");
-                });
+                    b.Navigation("OrdersAsCustomer");
 
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.CustomerAddress", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("NetMovilAPI.Infraestructure.Models.UserModels.Employee", b =>
-                {
-                    b.Navigation("Orders");
+                    b.Navigation("OrdersAsEmployee");
                 });
 #pragma warning restore 612, 618
         }

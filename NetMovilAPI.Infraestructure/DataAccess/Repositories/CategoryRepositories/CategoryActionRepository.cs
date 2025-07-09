@@ -22,7 +22,7 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
             Description = entity.Description,
             ImageUrl = entity.ImageUrl,
             CategoryStatusID = entity.CategoryStatus.Id,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = entity.CreatedBy,
         };
         try
@@ -60,7 +60,7 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
             model.ImageUrl = entity.ImageUrl;
             model.CategoryStatusID = entity.CategoryStatus.Id;
             model.UpdatedBy = entity.CreatedBy;
-            model.UpdatedAt = DateTime.Now;
+            model.UpdatedAt = DateTimeOffset.UtcNow;
 
             await _dbContext.SaveChangesAsync();
             entity.UpdatedAt = model.UpdatedAt;
@@ -92,7 +92,7 @@ public class CategoryActionRepository : IActionRepository<CategoryEntity>
             }
             await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.CategoryStatusID, 1)
                 .SetProperty(ct => ct.UpdatedBy, idUser)
-                .SetProperty(ct => ct.UpdatedAt, DateTime.Now));
+                .SetProperty(ct => ct.UpdatedAt, DateTimeOffset.UtcNow));
             return new ApiResponse<CategoryEntity>
             {
                 Success = true,

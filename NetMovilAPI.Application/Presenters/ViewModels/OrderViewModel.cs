@@ -15,7 +15,7 @@ public class OrderViewModel
     public string? CustomerName { get; set; }
     public int? TableID { get; set; }
     public List<OrderProductViewModel>? OrderProducts { get; set; }
-    public DateTime? OrderDate { get; set; }
+    public DateTimeOffset? OrderDate { get; set; }
     public int CreatedBy { get; set; }
     public int BranchID { get; set; } // NUEVO CAMPO
     [JsonIgnore]

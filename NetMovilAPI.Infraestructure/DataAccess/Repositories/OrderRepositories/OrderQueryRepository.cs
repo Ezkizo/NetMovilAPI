@@ -28,8 +28,8 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
                 Notes = o.Notes,
                 CustomerID = o.CustomerID,
                 OrderStatusID = o.OrderStatusID,
-                CustomerName = o.CustomerID != null && o.Customer != null && o.Customer.User != null
-                    ? o.Customer.User.FirstName + " " + o.Customer.User.LastName
+                CustomerName = o.CustomerID != null && o.Customer != null && o.Customer != null
+                    ? o.Customer.FirstName + " " + o.Customer.LastName
                     : o.CustomerName,
                 OrderProducts = o.OrderProducts.Select(op => new OrderProductEntity
                 {
@@ -59,14 +59,14 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
             .Select(o => new OrderEntity
             {
                 OrderID = o.OrderID,
-                UserID = o.UserID,
+                EmployeeID = o.EmployeeID,
                 TotalAmount = o.TotalAmount,
                 BarCode = o.BarCode,
                 Notes = o.Notes,
                 CustomerID = o.CustomerID,
                 OrderStatusID = o.OrderStatusID,
-                CustomerName = o.CustomerID != null && o.Customer != null && o.Customer.User != null
-                    ? o.Customer.User.FirstName + " " + o.Customer.User.LastName
+                CustomerName = o.CustomerID != null && o.Customer != null && o.Customer != null
+                    ? o.Customer.FirstName + " " + o.Customer.LastName
                     : o.CustomerName,
                 OrderProducts = o.OrderProducts.Select(op => new OrderProductEntity
                 {

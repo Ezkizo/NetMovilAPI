@@ -25,7 +25,7 @@ public class OrderActionRepository : IActionRepository<OrderEntity>
             CustomerID = entity.CustomerID,
             CustomerName = entity.CustomerName,
             BranchID = entity.BranchID,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = entity.CreatedBy,
             OrderProducts = entity.OrderProducts?
                 .Select(op => new OrderProduct
@@ -126,7 +126,7 @@ public class OrderActionRepository : IActionRepository<OrderEntity>
         {
             var query = _dbContext.Category.Where(c => c.CategoryID == id);
             await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.CategoryStatusID, 1));
-            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.DeletedAt, DateTime.Now));
+            await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.DeletedAt, DateTimeOffset.UtcNow));
             await query.ExecuteUpdateAsync(c => c.SetProperty(ct => ct.DeletedBy, idUser));
 
             return new ApiResponse<OrderEntity>

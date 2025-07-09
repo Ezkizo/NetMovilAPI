@@ -8,10 +8,8 @@
         public decimal TotalAmount { get; set; }
         public string? CustomerName { get; set; }
         public List<SalePaymentViewModel> Payments { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
         public int CreatedBy { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public int? UpdatedBy { get; set; } // Nullable to allow for cases where the entity has not been updated
     }
 
     public class SalePaymentViewModel

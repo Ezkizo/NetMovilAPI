@@ -28,8 +28,6 @@ public class SalePresenter : IPresenter<SaleEntity, SaleViewModel>
             }).ToList() ?? [],
             CreatedAt = data.CreatedAt,
             CreatedBy = data.CreatedBy,
-            UpdatedAt = data.UpdatedAt,
-            UpdatedBy = data.CreatedBy
         };
     }
 

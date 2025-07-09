@@ -46,7 +46,7 @@ public class ProductActionRepository : IActionRepository<ProductEntity>
                 }
                 : null,
 
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = entity.CreatedBy
         };
 
@@ -111,7 +111,7 @@ public class ProductActionRepository : IActionRepository<ProductEntity>
             product.IsStock = entity.IsStock;
             product.ProductStatusID = entity.ProductStatus.Id;
             product.BranchID = entity.BranchID;
-            product.UpdatedAt = DateTime.UtcNow;
+            product.UpdatedAt = DateTimeOffset.UtcNow;
             product.UpdatedBy = entity.UpdatedBy;
 
             // 3. Actualizar categorías (agregar nuevas y quitar eliminadas)
@@ -198,7 +198,7 @@ public class ProductActionRepository : IActionRepository<ProductEntity>
             if (model != null)
             {
                 await query.ExecuteUpdateAsync(p => p.SetProperty(pu => pu.ProductStatusID, 1)
-                        .SetProperty(pu => pu.DeletedAt, DateTime.Now)
+                        .SetProperty(pu => pu.DeletedAt, DateTimeOffset.UtcNow)
                         .SetProperty(pu => pu.DeletedBy, idUser));
                 return new ApiResponse<ProductEntity>
                 {

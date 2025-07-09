@@ -17,4 +17,7 @@ public class UserEntity
     public bool PhoneNumberConfirmed { get; set; }
     public bool TwoFactorEnabled { get; set; }
     public int AccessFailedCount { get; set; }
+    public string? ProfileImageUrl { get; set; } = "defaultprofileimage.png";
+    public string? EmergencyContactPhone { get; set; }
+    public string? EmergencyContactName { get; set; }
 }

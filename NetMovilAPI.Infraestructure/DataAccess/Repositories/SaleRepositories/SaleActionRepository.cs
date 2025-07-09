@@ -22,7 +22,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
         {
             TotalPaid = entity.TotalPaid,
             OrderID = entity.Order.OrderID,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTimeOffset.UtcNow,
             CreatedBy = entity.CreatedBy,
             Payments = entity.Payments?.Select(p => new SalePayment
             {
@@ -30,7 +30,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                 Reference = p.Reference,
                 PaymentMethodID = p.PaymentMethodID,
                 PaymentStatusID = p.PaymentStatusID,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTimeOffset.UtcNow,
                 CreatedBy = entity.CreatedBy
             }).ToList() ?? []
         };
@@ -85,7 +85,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
             }
 
             sale.TotalPaid = entity.TotalPaid;
-            sale.UpdatedAt = DateTime.UtcNow;
+            sale.UpdatedAt = DateTimeOffset.UtcNow;
             sale.UpdatedBy = entity.UpdatedBy;
 
             // Actualizar Payments (simple: eliminar y volver a agregar)
@@ -98,7 +98,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
                     Reference = p.Reference,
                     PaymentMethodID = p.PaymentMethodID,
                     PaymentStatusID = p.PaymentStatusID,
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = DateTimeOffset.UtcNow,
                     CreatedBy = entity.UpdatedBy ?? entity.CreatedBy
                 }).ToList();
             }
@@ -140,7 +140,7 @@ public class SaleActionRepository : IActionRepository<SaleEntity>
             if (sale != null)
             {
                 sale.SaleStatusID = 1; // Suponiendo 1 = eliminado/cancelado
-                sale.DeletedAt = DateTime.UtcNow;
+                sale.DeletedAt = DateTimeOffset.UtcNow;
                 sale.DeletedBy = idUser;
                 await _dbContext.SaveChangesAsync();
 

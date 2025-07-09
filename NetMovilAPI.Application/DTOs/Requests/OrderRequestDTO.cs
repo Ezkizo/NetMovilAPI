@@ -2,7 +2,7 @@
 public class OrderRequestDTO
 {
     public int OrderID { get; set; }
-    public int UserID { get; set; }
+    public int EmployeeID { get; set; }
     public decimal TotalAmount { get; set; }
     public string? BarCode { get; set; }
     public string? Notes { get; set; } = "Sin indicaciones adicionales";

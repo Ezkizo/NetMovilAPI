@@ -23,7 +23,7 @@ public class SaleMapper : IMapper<SaleRequestDTO, SaleEntity>
                 PaymentStatusID = p.PaymentStatusID,
             }).ToList(),
             CreatedBy = sale.CreatedBy,
-            CreatedAt = sale.CreatedAt,
+            CreatedAt = (DateTimeOffset)sale.CreatedAt!,
         };
     }
 

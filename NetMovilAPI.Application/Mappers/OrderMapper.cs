@@ -11,7 +11,7 @@ public class OrderMapper : IMapper<OrderRequestDTO, OrderEntity>
         return new OrderEntity
         {
             OrderID = dto.OrderID,
-            UserID = dto.UserID,
+            EmployeeID = dto.EmployeeID,
             BarCode = dto.BarCode,
             Notes = dto.Notes,
             TotalAmount = dto.TotalAmount,

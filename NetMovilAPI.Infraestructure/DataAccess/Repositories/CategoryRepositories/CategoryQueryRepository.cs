@@ -30,7 +30,9 @@ public class CategoryQueryRepository : IQueryRepository<Category, CategoryEntity
                     Description = c.CategoryStatus.Description
                 },
                 CreatedAt = c.CreatedAt,
-                UpdatedAt = c.UpdatedAt
+                CreatedBy = c.CreatedBy,
+                UpdatedAt = c.UpdatedAt,
+                UpdatedBy = c.UpdatedBy
             }).FirstOrDefaultAsync();
 
         return data ??= new CategoryEntity { CategoryID = 0 };
@@ -53,7 +55,9 @@ public class CategoryQueryRepository : IQueryRepository<Category, CategoryEntity
                     Description = c.CategoryStatus.Description
                 },
                 CreatedAt = c.CreatedAt,
-                UpdatedAt = c.UpdatedAt
+                CreatedBy = c.CreatedBy,
+                UpdatedAt = c.UpdatedAt,
+                UpdatedBy = c.UpdatedBy
             }).ToListAsync();
 
         return data;

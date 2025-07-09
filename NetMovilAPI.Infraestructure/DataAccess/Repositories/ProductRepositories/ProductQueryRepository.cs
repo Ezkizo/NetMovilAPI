@@ -48,7 +48,9 @@ public class ProductQueryRepository : IQueryRepository<Product, ProductEntity>
                     ImageUrl = pc.Category.ImageUrl ?? "default"
                 }).ToList(),
                 CreatedAt = c.CreatedAt,
-                CreatedBy = c.CreatedBy
+                CreatedBy = c.CreatedBy,
+                UpdatedBy = c.UpdatedBy,
+                UpdatedAt = c.UpdatedAt
             })
             .FirstOrDefaultAsync();
 
@@ -87,7 +89,9 @@ public class ProductQueryRepository : IQueryRepository<Product, ProductEntity>
                     ImageUrl = pc.Category.ImageUrl ?? "default"
                 }).ToList(),
                 CreatedAt = c.CreatedAt,
-                CreatedBy = c.CreatedBy
+                CreatedBy = c.CreatedBy,
+                UpdatedBy = c.UpdatedBy,
+                UpdatedAt = c.UpdatedAt
             })
            .ToListAsync();
     }

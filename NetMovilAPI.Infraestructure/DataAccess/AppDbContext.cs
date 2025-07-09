@@ -24,12 +24,8 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     #endregion Products
 
     #region Users
-    // public DbSet<User> User { get; set; } La tabla User ya existe en IdentityDbContext
-    public DbSet<Customer> Customer { get; set; }
-    public DbSet<Employee> Employee { get; set; }
-    public DbSet<CustomerAddress> CustomerAddress { get; set; }
+    public DbSet<UserAddress> CustomerAddress { get; set; }
     public DbSet<UserStatus> UserStatus { get; set; }
-    // public DbSet<Role> Role { get; set; } La tabla Role ya existe en IdentityDbContext
     #endregion Users
 
     #region Sales
@@ -65,32 +61,29 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasForeignKey(u => u.UserStatusID)
             .OnDelete(DeleteBehavior.NoAction);
 
-        // Customer Relations
-        modelBuilder.Entity<Customer>().HasKey(e => e.CustomerID);
-        modelBuilder.Entity<Customer>()
-            .HasMany(c => c.Addresses)
-            .WithOne(a => a.Customer)
-            .HasForeignKey(a => a.CustomerID)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Customer>()
-            .HasOne(c => c.User)
-            .WithOne()
-            .HasForeignKey<Customer>(u => u.Id)
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.OrdersAsEmployee)
+            .WithOne(o => o.Employee)
+            .HasForeignKey(o => o.EmployeeID)
             .OnDelete(DeleteBehavior.NoAction);
 
-        // Employee Relations
-        modelBuilder.Entity<Employee>().HasKey(e => e.EmployeeID);
-        modelBuilder.Entity<Employee>()
-            .HasOne(e => e.User)
-            .WithOne()
-            .HasForeignKey<Employee>(e => e.Id)
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Addresses)
+            .WithOne(a => a.User)
+            .HasForeignKey(a => a.UserID)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<CustomerAddress>().HasKey(e => e.CustomerAddressID);
-        modelBuilder.Entity<CustomerAddress>()
-            .HasMany(ca => ca.Orders)
-            .WithOne(o => o.CustomerAddress)
-            .HasForeignKey(o => o.CustomerAddressID)
+        //modelBuilder.Entity<User>()
+        //    .HasMany(u => u.Sales)
+        //    .WithOne(s => s.Employee)
+        //    .HasForeignKey(s => s.EmployeeID)
+        //    .OnDelete(DeleteBehavior.NoAction); Agregar si impacta el rendimiento
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.OrdersAsCustomer)
+            .WithOne(o => o.Customer)
+            .HasForeignKey(o => o.CustomerID)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
         #endregion User
 
@@ -108,19 +101,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Order>() // Employee
             .HasOne(o => o.Employee)
-            .WithMany(e => e.Orders)
+            .WithMany(e => e.OrdersAsEmployee)
             .HasForeignKey(o => o.EmployeeID)
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Order>() // Customer
             .HasOne(o => o.Customer)
-            .WithMany(c => c.Orders)
+            .WithMany(c => c.OrdersAsCustomer)
             .HasForeignKey(o => o.CustomerID)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Order>()
-            .HasOne(o => o.CustomerAddress)
-            .WithMany(ca => ca.Orders)
-            .HasForeignKey(o => o.CustomerAddressID)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
 
@@ -305,12 +292,12 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         #region UserProperties
         modelBuilder.Entity<User>()
             .Property(u => u.FirstName)
-            .HasMaxLength(50)
+            .HasMaxLength(70)
             .IsRequired();
 
         modelBuilder.Entity<User>()
             .Property(u => u.LastName)
-            .HasMaxLength(50)
+            .HasMaxLength(70)
             .IsRequired();
 
         modelBuilder.Entity<User>()
@@ -323,13 +310,13 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .HasMaxLength(15);
 
         // Customer
-        modelBuilder.Entity<Employee>()
+        modelBuilder.Entity<User>()
             .Property(e => e.EmergencyContact)
             .HasMaxLength(20);
-        modelBuilder.Entity<Employee>()
+        modelBuilder.Entity<User>()
             .Property(e => e.EmergencyContactName)
             .HasMaxLength(50);
-        modelBuilder.Entity<Employee>()
+        modelBuilder.Entity<User>()
             .Property(e => e.ProfileImage)
             .HasMaxLength(150);
         #endregion UserProperties
@@ -403,24 +390,24 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         #endregion StockProperties
 
         #region Address
-        modelBuilder.Entity<CustomerAddress>()
+        modelBuilder.Entity<UserAddress>()
         .Property(ca => ca.Street)
         .HasMaxLength(100);
 
-        modelBuilder.Entity<CustomerAddress>()
+        modelBuilder.Entity<UserAddress>()
             .Property(ca => ca.City)
             .HasMaxLength(50);
 
-        modelBuilder.Entity<CustomerAddress>()
-            .Property(ca => ca.DeliveryReferences)
+        modelBuilder.Entity<UserAddress>()
+            .Property(ca => ca.References)
             .HasMaxLength(250)
             .HasDefaultValue("Sin referencias");
 
-        modelBuilder.Entity<CustomerAddress>()
+        modelBuilder.Entity<UserAddress>()
             .Property(ca => ca.State)
             .HasMaxLength(50);
 
-        modelBuilder.Entity<CustomerAddress>()
+        modelBuilder.Entity<UserAddress>()
             .Property(ca => ca.Country)
             .HasMaxLength(50);
         #endregion Address
@@ -522,12 +509,12 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             new PaymentStatus { PaymentStatusID = 5, Description = "Aceptado" }
         );
 
-        var dateTime = DateTime.Now;
+        var staticDate = new DateTimeOffset(2025, 7, 1, 0, 0, 0, TimeSpan.Zero);
 
         modelBuilder.Entity<PaymentMethod>().HasData(
-            new PaymentMethod { PaymentMethodID = 1, Name = "Efectivo", Description = "Pago en efectivo directo a caja.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime },
-            new PaymentMethod { PaymentMethodID = 2, Name = "Transferencia", Description = "Transferencia DIMO, banca digital o CODI.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime },
-            new PaymentMethod { PaymentMethodID = 3, Name = "Terminal", Description = "Pago en terminal bancaria, se abona a una cuenta digital.", IsActive = true, CreatedBy = 1, CreatedAt = dateTime }
+            new PaymentMethod { PaymentMethodID = 1, Name = "Efectivo", Description = "Pago en efectivo directo a caja.", IsActive = true, CreatedBy = 1, CreatedAt = staticDate },
+            new PaymentMethod { PaymentMethodID = 2, Name = "Transferencia", Description = "Transferencia DIMO, banca digital o CODI.", IsActive = true, CreatedBy = 1, CreatedAt = staticDate },
+            new PaymentMethod { PaymentMethodID = 3, Name = "Terminal", Description = "Pago en terminal bancaria, se abona a una cuenta digital.", IsActive = true, CreatedBy = 1, CreatedAt = staticDate }
         );
 
         modelBuilder.Entity<OrderStatus>().HasData(
@@ -545,7 +532,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         );
 
         modelBuilder.Entity<Category>().HasData(
-            new Category { CategoryID = 1, Name = "Ejemplo", Description = "Categoría de ejemplo", ImageUrl = "defaultcategory.png", CategoryStatusID = 3, CreatedBy = 1, CreatedAt = dateTime }
+            new Category { CategoryID = 1, Name = "Ejemplo", Description = "Categoría de ejemplo", ImageUrl = "defaultcategory.png", CategoryStatusID = 3, CreatedBy = 1, CreatedAt = staticDate }
         );
 
         modelBuilder.Entity<Branch>().HasData(
@@ -554,7 +541,11 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
         );
 
         modelBuilder.Entity<Product>().HasData(
-            new Product { ProductID = 1, Name = "Ejemplo producto", Description = "Este es un producto de prueba", BasePrice = 50.00m, ProfitMargin = 100, UnitPrice = 100, ImageUrl = "defaultproduct.png", BarCode = null, IsStock = false, ProductStatusID = 3, BranchID = 1, CreatedBy = 1, CreatedAt = dateTime }
+            new Product { ProductID = 1, Name = "Ejemplo producto", Description = "Este es un producto de prueba", BasePrice = 50.00m, ProfitMargin = 100, UnitPrice = 100, ImageUrl = "defaultproduct.png", BarCode = null, IsStock = false, ProductStatusID = 3, BranchID = 1, CreatedBy = 1, CreatedAt = staticDate }
+        );
+
+        modelBuilder.Entity<ProductCategory>().HasData(
+            new ProductCategory { ProductID = 1, CategoryID = 1 }
         );
 
         #endregion SeedData

@@ -4,7 +4,7 @@ namespace NetMovilAPI.Domain.Entities.Order;
 public class OrderEntity : AuditableEntity
 {
     public int OrderID { get; set; }
-    public int UserID { get; set; }
+    public int EmployeeID { get; set; }
     public decimal TotalAmount { get; set; }
     public int OrderCount { get => OrderProducts?.Sum(op => op.Quantity) ?? 0; }
     public string? BarCode { get; set; }

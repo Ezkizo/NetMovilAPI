@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace NetMovilAPI.Infraestructure.Migrations
 {
     /// <inheritdoc />
@@ -76,11 +78,11 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,16 +168,16 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     CategoryStatusID = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,11 +207,11 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     ProductStatusID = table.Column<int>(type: "int", nullable: false),
                     BranchID = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,8 +234,11 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProfileImage = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    EmergencyContact = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    EmergencyContactName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     UserStatusID = table.Column<int>(type: "int", nullable: false),
                     BranchID = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -401,84 +406,33 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    CustomerID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerID);
-                    table.ForeignKey(
-                        name: "FK_Customer_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employee",
-                columns: table => new
-                {
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileImage = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    EmergencyContact = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    EmergencyContactName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employee", x => x.EmployeeID);
-                    table.ForeignKey(
-                        name: "FK_Employee_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CustomerAddress",
                 columns: table => new
                 {
-                    CustomerAddressID = table.Column<int>(type: "int", nullable: false)
+                    UserAddressID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    DeliveryReferences = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true, defaultValue: "Sin referencias"),
+                    References = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true, defaultValue: "Sin referencias"),
                     PostalCode = table.Column<int>(type: "int", nullable: true),
                     State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAddress", x => x.CustomerAddressID);
+                    table.PrimaryKey("PK_CustomerAddress", x => x.UserAddressID);
                     table.ForeignKey(
-                        name: "FK_CustomerAddress_Customer_CustomerID",
-                        column: x => x.CustomerID,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerID");
+                        name: "FK_CustomerAddress_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -494,38 +448,32 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     BranchID = table.Column<int>(type: "int", nullable: false),
                     OrderStatusID = table.Column<int>(type: "int", nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
-                    CustomerAddressID = table.Column<int>(type: "int", nullable: true),
                     CustomerID = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderID);
                     table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_CustomerID",
+                        column: x => x.CustomerID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Order_Branch_BranchID",
                         column: x => x.BranchID,
                         principalTable: "Branch",
                         principalColumn: "BranchID");
-                    table.ForeignKey(
-                        name: "FK_Order_CustomerAddress_CustomerAddressID",
-                        column: x => x.CustomerAddressID,
-                        principalTable: "CustomerAddress",
-                        principalColumn: "CustomerAddressID");
-                    table.ForeignKey(
-                        name: "FK_Order_Customer_CustomerID",
-                        column: x => x.CustomerID,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerID");
-                    table.ForeignKey(
-                        name: "FK_Order_Employee_EmployeeID",
-                        column: x => x.EmployeeID,
-                        principalTable: "Employee",
-                        principalColumn: "EmployeeID");
                     table.ForeignKey(
                         name: "FK_Order_OrderStatus_OrderStatusID",
                         column: x => x.OrderStatusID,
@@ -569,11 +517,11 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     SaleStatusID = table.Column<int>(type: "int", nullable: false),
                     OrderID = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -607,11 +555,11 @@ namespace NetMovilAPI.Infraestructure.Migrations
                     PaymentMethodID = table.Column<int>(type: "int", nullable: false),
                     PaymentStatusID = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -632,6 +580,100 @@ namespace NetMovilAPI.Infraestructure.Migrations
                         principalTable: "Sale",
                         principalColumn: "SaleID");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Branch",
+                columns: new[] { "BranchID", "Address", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Dirección sucursal 1", "Sucursal 1" },
+                    { 2, "Dirección sucursal 2", "Sucursal 2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CategoryStatus",
+                columns: new[] { "CategoryStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminada" },
+                    { 2, "Inactiva" },
+                    { 3, "Activa" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderStatus",
+                columns: new[] { "OrderStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminada" },
+                    { 2, "Cancelada" },
+                    { 3, "En reclamación" },
+                    { 4, "Activa" },
+                    { 5, "Completada" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PaymentMethod",
+                columns: new[] { "PaymentMethodID", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "Description", "IsActive", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, "Pago en efectivo directo a caja.", true, "Efectivo", null, null },
+                    { 2, new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, "Transferencia DIMO, banca digital o CODI.", true, "Transferencia", null, null },
+                    { 3, new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, "Pago en terminal bancaria, se abona a una cuenta digital.", true, "Terminal", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PaymentStatus",
+                columns: new[] { "PaymentStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminado" },
+                    { 2, "Cancelado" },
+                    { 3, "Rechazado" },
+                    { 4, "En espera" },
+                    { 5, "Aceptado" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductStatus",
+                columns: new[] { "ProductStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminado" },
+                    { 2, "Fuera de Stock" },
+                    { 3, "En existencia" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SaleStatus",
+                columns: new[] { "SaleStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminada" },
+                    { 2, "Cancelada" },
+                    { 3, "Pendiente" },
+                    { 4, "Pagada" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserStatus",
+                columns: new[] { "UserStatusID", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Eliminado" },
+                    { 2, "Inactivo" },
+                    { 3, "Activo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "CategoryID", "CategoryStatusID", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "Description", "ImageUrl", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 3, new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, "Categoría de ejemplo", "defaultcategory.png", "Ejemplo", null, null });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "ProductID", "BarCode", "BasePrice", "BranchID", "CreatedAt", "CreatedBy", "DeletedAt", "DeletedBy", "Description", "ImageUrl", "IsStock", "Name", "ProductStatusID", "ProfitMargin", "StockID", "UnitPrice", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, null, 50.00m, 1, new DateTimeOffset(new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, null, null, "Este es un producto de prueba", "defaultproduct.png", false, "Ejemplo producto", 3, 100m, null, 100m, null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -688,31 +730,14 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 column: "CategoryStatusID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customer_Id",
-                table: "Customer",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerAddress_CustomerID",
+                name: "IX_CustomerAddress_UserID",
                 table: "CustomerAddress",
-                column: "CustomerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employee_Id",
-                table: "Employee",
-                column: "Id",
-                unique: true);
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_BranchID",
                 table: "Order",
                 column: "BranchID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_CustomerAddressID",
-                table: "Order",
-                column: "CustomerAddressID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerID",
@@ -816,6 +841,9 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CustomerAddress");
+
+            migrationBuilder.DropTable(
                 name: "OrderProduct");
 
             migrationBuilder.DropTable(
@@ -858,19 +886,10 @@ namespace NetMovilAPI.Infraestructure.Migrations
                 name: "ProductStatus");
 
             migrationBuilder.DropTable(
-                name: "CustomerAddress");
-
-            migrationBuilder.DropTable(
-                name: "Employee");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "OrderStatus");
-
-            migrationBuilder.DropTable(
-                name: "Customer");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Branch");
