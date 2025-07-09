@@ -4,9 +4,9 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - NetMovil
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - main
   workflow_dispatch:
 
 jobs:
@@ -16,8 +16,13 @@ jobs:
       contents: read #This is required for actions/checkout
 
     steps:
+      - name: Set up environment variables
+        run: |
+         echo "API_KEY_SECRET=${{ secrets.API_KEY_SECRET }}" >> $GITHUB_ENV
+         echo "ConnectionStrings__DefaultConnection=${{ secrets.AZURE_SQL_CONNECTIONSTRING }}" >> $GITHUB_ENV
+      
       - uses: actions/checkout@v4
-
+      
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
