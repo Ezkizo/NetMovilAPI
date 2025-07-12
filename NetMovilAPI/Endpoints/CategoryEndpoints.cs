@@ -17,7 +17,7 @@ public static class CategoryEndpoints
 
         group.MapGet("", async Task<IResult> (GetCategoryUseCase<Category, CategoryEntity, CategoryViewModel> useCase) =>
         {
-            var result = await useCase.ExecuteAsync(c => c.CategoryStatusID != 0);
+            var result = await useCase.ExecuteAsync(c => c.CategoryStatusID > 1);
             if (result == null || !result.Any())
             {
                 return TypedResults.NotFound(new ApiResponse<IEnumerable<CategoryViewModel>>("No se pudieron recuperar correctamente los registros"));

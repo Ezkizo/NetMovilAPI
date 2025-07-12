@@ -29,6 +29,7 @@ using NetMovilAPI.Infraestructure.Models.Shared;
 using NetMovilAPI.Infraestructure.Models.UserModels;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using NetMovilAPI.Domain.Entities.BaseEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -219,6 +220,7 @@ app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManag
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Name, user.UserName!)
     };
+    var expiration = DateTime.UtcNow.AddHours(14); // El token expira en 14 horas
     claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
     claims.AddRange(userClaims.Select(claim => new Claim(claim.Type, claim.Value)));
     var credsKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -227,11 +229,23 @@ app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManag
         issuer: null, // Especificar un emisor si se desea
         audience: null, // Especificar una audiencia si se desea
         claims: claims,
-        expires: DateTime.UtcNow.AddHours(14), // El token expira en 14 horas
+        expires: expiration, // El token expira en 14 horas
         signingCredentials: creds
     );
     var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-    return Results.Ok(new { token = tokenString });
+    // Cambia la respuesta para incluir el token y la fecha de expiración
+    var response = new ApiResponse<object>
+    {
+        Success = true,
+        Message = "Inicio de sesión exitoso.",
+        Data = new
+        {
+            Token = tokenString,
+            Expiration = expiration,
+            branchid = user.BranchID, // Incluye el BranchID del usuario 
+        }
+    };
+    return Results.Ok(response);
 });
 
 // Update the line causing the error by explicitly setting the properties of the Role object
@@ -250,8 +264,8 @@ app.MapPost("/api/create-roles", async (RoleManager<IdentityRole<int>> roleManag
     }
     return TypedResults.Ok("Roles created successfully!");
 })
-.RequireAuthorization("IsEmployee");
-
+//.RequireAuthorization("IsEmployee");
+;
 app.MapPost("/api/create-user", async (UserRequestDTO userDto, UserManager<User> userManager) =>
 {
     if (string.IsNullOrWhiteSpace(userDto.UserName) ||
@@ -259,7 +273,8 @@ app.MapPost("/api/create-user", async (UserRequestDTO userDto, UserManager<User>
         string.IsNullOrWhiteSpace(userDto.Password) ||
         string.IsNullOrWhiteSpace(userDto.FirstName) ||
         string.IsNullOrWhiteSpace(userDto.LastName) ||
-        userDto.UserStatusID == 0)
+        userDto.UserStatusID == 0 ||
+        userDto.BranchID == 0)
     {
         return Results.BadRequest("Faltan campos requeridos para el registro.");
     }
@@ -285,8 +300,8 @@ app.MapPost("/api/create-user", async (UserRequestDTO userDto, UserManager<User>
 
     return Results.Ok("Usuario creado exitosamente.");
 })
-.RequireAuthorization("IsEmployee");
-
+//.RequireAuthorization("IsEmployee");
+;
 app.MapPost("/api/assign-role", async (string roleToAssign, string userEmail, UserManager<User> userManager) =>
 {
     var user = await userManager.FindByEmailAsync(userEmail); //new User { UserName = "testuser@example.com", Email = "testuser@example.com" };
@@ -298,8 +313,8 @@ app.MapPost("/api/assign-role", async (string roleToAssign, string userEmail, Us
 
     return isUserInRole ? Results.Ok($"User is in role: {isUserInRole}") : Results.BadRequest("User is not in role.");
 })
-.RequireAuthorization("IsEmployee");
-
+//.RequireAuthorization("IsEmployee");
+;
 app.MapCategoryEndpoints();
 app.MapProductEndpoints();
 app.MapOrderEndpoints();
