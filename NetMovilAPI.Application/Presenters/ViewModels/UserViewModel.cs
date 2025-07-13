@@ -18,7 +18,6 @@ public class UserViewModel
     public string? ProfileImageUrl { get; set; } = "defaultprofileimage.png";
     public string? EmergencyContactPhone { get; set; }
     public string? EmergencyContactName { get; set; }
-    public UserAddressViewModel? UserAddress { get; set; }
 }
 
 public class UserAddressViewModel
