@@ -3,6 +3,7 @@ using NetMovilAPI.Domain.Entities.BaseEntities;
 using NetMovilAPI.Domain.Entities.Order;
 using NetMovilAPI.Domain.Interfaces;
 using NetMovilAPI.Infraestructure.Models.OrderModels;
+using System.Diagnostics;
 
 namespace NetMovilAPI.Infraestructure.DataAccess.Repositories.OrderRepositories;
 public class OrderActionRepository : IActionRepository<OrderEntity>
@@ -53,70 +54,73 @@ public class OrderActionRepository : IActionRepository<OrderEntity>
 
     public async Task<OrderEntity> UpdateAsync(OrderEntity entity)
     {
-        // 1. Cargar la orden existente con detalles
-        var order = await _dbContext.Order
+        try
+        {
+            // 1. Cargar la orden existente con detalles
+            var order = await _dbContext.Order
             .Include(o => o.OrderProducts)
             .FirstOrDefaultAsync(o => o.OrderID == entity.OrderID);
 
-        if (order == null)
-            return new OrderEntity { OrderID = 0, Notes = "Orden no encontrada" };
+            if (order == null)
+                return new OrderEntity { OrderID = 0, Notes = "Orden no encontrada" };
 
-        // 2. Actualizar campos de cabecera
-        order.Notes = entity.Notes;
-        order.TotalAmount = entity.TotalAmount;
-        order.BarCode = entity.BarCode;
-        order.OrderStatusID = entity.OrderStatusID;
-        order.CustomerID = entity.CustomerID;
-        order.CustomerName = entity.CustomerName;
+            // 2. Actualizar campos de cabecera
+            order.Notes = entity.Notes;
+            order.TotalAmount = entity.TotalAmount;
+            order.BarCode = entity.BarCode;
+            order.OrderStatusID = entity.OrderStatusID;
+            order.CustomerID = entity.CustomerID;
+            order.CustomerName = entity.CustomerName;
+            order.BranchID  = entity.BranchID;
 
-        // 3. Sincronizar colección OrderProducts
-        var incomingIds = entity.OrderProducts?.Where(x => x.OrderProductID != 0)
-                .Select(x => x.OrderProductID)
-                .ToHashSet();
+            // 3. Sincronizar colección OrderProducts
+            var incomingIds = entity.OrderProducts?.Where(x => x.OrderProductID != 0)
+                    .Select(x => x.OrderProductID)
+                    .ToHashSet();
 
-        // 3.1 Eliminar los que no vienen
-        if (incomingIds != null)
-        {
-            var toRemove = order.OrderProducts
-                .Where(op => !incomingIds.Contains(op.OrderProductID))
-                .ToList();
-            _dbContext.OrderProduct.RemoveRange(toRemove);
-        }
-
-        // 3.2 Insertar nuevos y actualizar existentes
-        // Validación de si hay productos entrantes
-        if (entity.OrderProducts != null && entity.OrderProducts.Any())
-        {
-            foreach (var incoming in entity.OrderProducts)
+            // 3.1 Eliminar los que no vienen
+            if (incomingIds != null)
             {
-                if (incoming.OrderProductID == 0)
+                var toRemove = order.OrderProducts
+                    .Where(op => !incomingIds.Contains(op.OrderProductID))
+                    .ToList();
+                _dbContext.OrderProduct.RemoveRange(toRemove);
+            }
+
+            // 3.2 Insertar nuevos y actualizar existentes
+            // Validación de si hay productos entrantes
+            if (entity.OrderProducts != null && entity.OrderProducts.Any())
+            {
+                foreach (var incoming in entity.OrderProducts)
                 {
-                    // Nuevo detalle
-                    order.OrderProducts.Add(new OrderProduct
+                    if (incoming.OrderProductID == 0)
                     {
-                        ProductID = incoming.ProductID,
-                        Quantity = incoming.Quantity
-                    });
-                }
-                else
-                {
-                    // Actualizar existente
-                    var existing = order.OrderProducts
-                        .First(op => op.OrderProductID == incoming.OrderProductID);
-                    existing.Quantity = incoming.Quantity;
+                        // Nuevo detalle
+                        order.OrderProducts.Add(new OrderProduct
+                        {
+                            ProductID = incoming.ProductID,
+                            Quantity = incoming.Quantity
+                        });
+                    }
+                    else
+                    {
+                        // Actualizar existente
+                        var existing = order.OrderProducts
+                            .First(op => op.OrderProductID == incoming.OrderProductID);
+                        existing.Quantity = incoming.Quantity;
+                    }
                 }
             }
-        }
 
-        // 4. Guardar cambios
-        try
-        {
+            // 4. Guardar cambios
+
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return new OrderEntity { OrderID = entity.OrderID, Notes = "Error al actualizar la orden" };
+            Debug.WriteLine(ex.Message);
+            return new OrderEntity { OrderID = entity.OrderID, Notes = $"Error al actualizar la orden. \n {ex.Message}" };
         }
     }
 

@@ -44,6 +44,7 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
                     }
                     : null
                 }).ToList(),
+                BranchID = o.BranchID, // NUEVO CAMPO
                 CreatedAt = o.CreatedAt,
                 CreatedBy = o.CreatedBy
             })
@@ -81,6 +82,7 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
                     }
                     : null
                 }).ToList(),
+                BranchID = o.BranchID, // NUEVO CAMPO
                 CreatedAt = o.CreatedAt,
                 CreatedBy = o.CreatedBy
             })
