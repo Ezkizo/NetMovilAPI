@@ -13,7 +13,6 @@ public class OrderViewModel
     public int OrderStatusID { get; set; }
     public int? CustomerID { get; set; }
     public string? CustomerName { get; set; }
-    public int? TableID { get; set; }
     public List<OrderProductViewModel>? OrderProducts { get; set; }
     public DateTimeOffset? OrderDate { get; set; }
     public int CreatedBy { get; set; }

@@ -16,6 +16,7 @@ public class ProductViewModel
     public bool IsStock { get; set; } = true;
     public int? StockID { get; set; }
     public decimal? StockQuantity { get; set; }
+    public decimal? Threshold { get; set; }
     public DateTimeOffset? CreatedAt { get; set; }
     public int CreatedBy { get; set; }
     public int BranchID { get; set; } // NUEVO CAMPO

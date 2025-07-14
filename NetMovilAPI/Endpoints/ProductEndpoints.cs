@@ -34,6 +34,27 @@ public static class ProductEndpoints
             return operation;
         });
 
+        group.MapGet("ByCategory/{categoryID:int}", async Task<IResult> (int categoryID, GetProductUseCase<Product, ProductEntity, ProductViewModel> useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(c => c.ProductCategories.Any(pc => pc.CategoryID == categoryID));
+            if (result == null || result.Count() == 0)
+            {
+                return TypedResults.NotFound(new ApiResponse<IEnumerable<ProductViewModel>>("No se pudieron recuperar correctamente los registros"));
+            }
+            var response = new ApiResponse<IEnumerable<ProductViewModel>>(result, "Se han recuperado con éxito los registros");
+            return TypedResults.Ok(response);
+        })
+        .WithOpenApi(operation =>
+        {
+            operation.Summary = "Get all products by category";
+            operation.Description = "Retrieves all the products filtered by category";
+            operation.Responses["400"] = new OpenApiResponse
+            {
+                Description = "It was not possible to retrieve products."
+            };
+            return operation;
+        });
+
         group.MapGet("/{id:int}", async Task<IResult> (int id, GetProductByIdUseCase<Product, ProductEntity, ProductViewModel> useCase) =>
         {
             ApiResponse<ProductViewModel> response;

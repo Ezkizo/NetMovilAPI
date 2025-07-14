@@ -22,6 +22,7 @@ public class ProductPresenter : IPresenter<ProductEntity, ProductViewModel>
             IsStock = data.IsStock,
             StockID = data.Stock?.StockID ?? null,
             StockQuantity = data.Stock?.Quantity ?? 0,
+            Threshold = data.Stock?.Threshold ?? 0,
             Categories = data.ProductCategories?.Select(c => new CategoryViewModel
             {
                 CategoryID = c.CategoryID,

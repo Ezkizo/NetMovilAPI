@@ -30,6 +30,7 @@ using NetMovilAPI.Infraestructure.Models.UserModels;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using NetMovilAPI.Domain.Entities.BaseEntities;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -174,6 +175,39 @@ app.UseHttpsRedirection();
 // Rol para el dueño de la tienda y manager? el rol en ingles para el dueño de la tienda sería "Owner" o "Manager" y para un encargado de tienda sería "StoreManager" o "Supervisor". 
 var roles = new[] { "Admin", "Employee", "Customer", "Supervisor" };
 
+app.MapGet("/", () => "Welcome to NetMovil API!")
+    .WithName("GetRoot")
+    .WithOpenApi(operation =>
+    {
+        operation.Summary = "Get Root Endpoint";
+        operation.Description = "Returns a welcome message for the API.";
+        return operation;
+    });
+
+app.MapGet("/api/employees", async (UserManager<User> userManager) =>
+{
+    var users = await userManager.Users.ToListAsync();
+    users = [.. users.Where(u => u.UserStatusID == 3)];
+    return Results.Ok(users.Select(u => new
+    {
+        u.Id,
+        u.UserName,
+        u.Email,
+        u.PhoneNumber,
+        u.FirstName,
+        u.LastName,
+        u.UserStatusID,
+        u.BranchID
+    }));
+})
+.WithOpenApi(operation =>
+{
+    operation.Summary = "Get Employees";
+    operation.Description = "Returns a list of all employees in the system.";
+    operation.Responses["200"] = new OpenApiResponse { Description = "List of employees" };
+    return operation;
+});
+
 app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManager) =>
 {
     if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
@@ -202,7 +236,7 @@ app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManag
         if (await userManager.GetAccessFailedCountAsync(user) >= 5)
         {
             // Bloquear al usuario si ha alcanzado el límite de intentos fallidos
-            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(15)); // Bloquear por 15 minutos
+            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(10)); // Bloquear por 15 minutos
             return Results.BadRequest("El usuario ha sido bloqueado temporalmente por demasiados intentos fallidos.");
         }
         return Results.BadRequest("Datos incorrectos verifique el usuario y contraseña.");
@@ -242,6 +276,7 @@ app.MapPost("/api/login", async (UserRequestDTO dto, UserManager<User> userManag
         {
             Token = tokenString,
             Expiration = expiration,
+            userid = user.Id,
             branchid = user.BranchID, // Incluye el BranchID del usuario 
         }
     };
@@ -264,7 +299,7 @@ app.MapPost("/api/create-roles", async (RoleManager<IdentityRole<int>> roleManag
     }
     return TypedResults.Ok("Roles created successfully!");
 })
-//.RequireAuthorization("IsEmployee");
+.RequireAuthorization("IsEmployee");
 ;
 app.MapPost("/api/create-user", async (UserRequestDTO userDto, UserManager<User> userManager) =>
 {
@@ -300,7 +335,7 @@ app.MapPost("/api/create-user", async (UserRequestDTO userDto, UserManager<User>
 
     return Results.Ok("Usuario creado exitosamente.");
 })
-//.RequireAuthorization("IsEmployee");
+.RequireAuthorization("IsEmployee");
 ;
 app.MapPost("/api/assign-role", async (string roleToAssign, string userEmail, UserManager<User> userManager) =>
 {
@@ -313,7 +348,7 @@ app.MapPost("/api/assign-role", async (string roleToAssign, string userEmail, Us
 
     return isUserInRole ? Results.Ok($"User is in role: {isUserInRole}") : Results.BadRequest("User is not in role.");
 })
-//.RequireAuthorization("IsEmployee");
+.RequireAuthorization("IsEmployee");
 ;
 app.MapCategoryEndpoints();
 app.MapProductEndpoints();

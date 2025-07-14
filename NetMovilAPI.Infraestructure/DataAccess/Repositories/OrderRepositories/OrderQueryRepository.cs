@@ -36,7 +36,8 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
                     OrderProductID = op.OrderProductID,
                     ProductID = op.ProductID,
                     OrderID = o.OrderID,
-                    Product = op.Product != null 
+                    Quantity = (int)op.Quantity,
+                    Product = op.Product != null
                     ? new ProductEntity
                     {
                         Name = op.Product.Name,
@@ -74,6 +75,7 @@ public class OrderQueryRepository : IQueryRepository<Order, OrderEntity>
                     OrderProductID = op.OrderProductID,
                     OrderID = o.OrderID,
                     ProductID = op.ProductID,
+                    Quantity = (int)op.Quantity,
                     Product = op.Product != null
                     ? new ProductEntity
                     {

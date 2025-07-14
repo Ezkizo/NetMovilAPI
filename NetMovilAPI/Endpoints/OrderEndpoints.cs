@@ -13,9 +13,30 @@ public static class OrderEndpoints
     {
         var group = routes.MapGroup("/api/orders");
 
-        group.MapGet("/{branchID:int}", async Task<IResult> (int branchID, GetOrderUseCase<Order, OrderEntity, OrderViewModel> useCase) =>
+        group.MapGet("", async Task<IResult> (GetOrderUseCase<Order, OrderEntity, OrderViewModel> useCase) =>
         {
-            var result = await useCase.ExecuteAsync(o => o.OrderStatusID > 1 && o.BranchID == branchID);
+            var result = await useCase.ExecuteAsync(o => o.OrderStatusID > 1 && o.CreatedAt > DateTimeOffset.UtcNow.AddDays(-15));
+            if (result == null || result.Count() == 0)
+            {
+                return TypedResults.NotFound(new ApiResponse<IEnumerable<OrderViewModel>>("No se pudieron recuperar correctamente los registros de órdenes"));
+            }
+            var response = new ApiResponse<IEnumerable<OrderViewModel>>(result, "Se han recuperado con éxito los registros de órdenes");
+            return TypedResults.Ok(response);
+        })
+        .WithOpenApi(operation =>
+        {
+            operation.Summary = "Get all orders";
+            operation.Description = "Retrieves all the orders";
+            operation.Responses["400"] = new OpenApiResponse
+            {
+                Description = "No fue posible recuperar las órdenes"
+            };
+            return operation;
+        });
+
+        group.MapGet("/dispatched", async Task<IResult> (GetOrderUseCase<Order, OrderEntity, OrderViewModel> useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(o => o.OrderStatusID == 5);
             if (result == null || result.Count() == 0)
             {
                 return TypedResults.NotFound(new ApiResponse<IEnumerable<OrderViewModel>>("No se pudieron recuperar correctamente los registros de órdenes"));
